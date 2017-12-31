@@ -6,3 +6,16 @@ A collection of scripts / tools I've made for capture the flag style challenges 
 ## Tools:
 
 - Crawler.py: A simple web crawler that looks for the word "flag" in the comments or robots file of a website
+
+
+
+
+## TODO:
+
+ - 2 time pad
+ - encryption stuff
+ - forensic thingy?
+ - steg?
+ - password thingy
+ - notes
+
