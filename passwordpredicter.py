@@ -1,3 +1,15 @@
+#generate reverse dict for sorting
+#ie a dict with numbers as keys and patterns as values
+#this is useful for counting and sorting stuff
+def reverse_dict(dictionary):
+	revdict = {}
+	for key in dictionary:
+		if dictionary[key] in revdict:
+			revdict[dictionary[key]].append(key)
+		else:
+			revdict[dictionary[key]] = [key]
+	return revdict
+
 #generates leetpeak versions of a word
 def leetspeak(word):
 	if word =="":
@@ -32,7 +44,7 @@ def analyse_patterns():
 	#decide to generate patterns that distinguish between uppercase and lowercase characters
 	case_sensitive = False
 
-	file = open("rockyou-withcount.txt", 'r')
+	file = open("files/rockyou-withcount.txt", 'r')
 	words = file.read().split("\n")
 	file.close()
 
@@ -63,12 +75,22 @@ def analyse_patterns():
 
 	print numdict 
 
+	revdict = reverse_dict(numdict)
+	nums = revdict.keys()
+	nums.sort(reverse =True)
+	text=""
+	for num in nums:
+		for pattern in revdict[num]:
+			line = str(num) + " " + pattern 
+		#	print line
+			text = text + line + "\n"
 
-	#generate reverse dict for sorting
-	
-	#file = open("files/patterns.txt", 'w+')
-	#file.write("")
-	#file.close()
+
+
+
+	file = open("files/patterns.txt", 'w+')
+	file.write(text)
+	file.close()
 
 
 	# TODO: symbols
@@ -77,7 +99,7 @@ def analyse_patterns():
 def analyse_numbers():
 	import re
 	
-	file = open("rockyou.txt", 'r')
+	file = open("files/rockyou.txt", 'r')
 	text = file.read()
 	file.close()
 

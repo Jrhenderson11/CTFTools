@@ -16,12 +16,19 @@ A collection of scripts / tools I've made for capture the flag style challenges 
 
 - passwordpredicter.py: A bunch of useful functions for generating passwords (unfinished)
 
+
+## Files:
+
+ - rockyou.txt: Famous password list
+ - rockyou-withcount.txt: Above withcount of each cracked password
+ - numbers.txt: Ordered list of most common number combinations found after letters in passwords (based on rockyou)
+ - patterns.txt: Ordered and counted list of passwords patterns: ie password123 is CCCCCCCCDDD (based on rockyou)
+
 ## TODO:
 
  - finish passweordpredicter
  - fuzzer
  - forensic thingy?
  - steg?
- - password thingy
  - notes
 
