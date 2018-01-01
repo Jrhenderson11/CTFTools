@@ -14,8 +14,11 @@ A collection of scripts / tools I've made for capture the flag style challenges 
 
 - crypter.py: A really simple demo of using the Crypto library to encrypt/decrypt 
 
+- passwordpredicter.py: A bunch of useful functions for generating passwords (unfinished)
+
 ## TODO:
 
+ - finish passweordpredicter
  - fuzzer
  - forensic thingy?
  - steg?
