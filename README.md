@@ -9,6 +9,8 @@ A collection of scripts / tools I've made for capture the flag style challenges 
 
 - 2-time-pad.py: A tool I made in a CTF to xor 2 images encrypted with a 1 time pad to get the key
 
+- capper.py: A tool used in a CTF to reconstruct a message hidden in pcap obfuscated with ARP poisoning
+			 basically a demo of using python to interact with .pcap files and inspect packets
 
 ## TODO:
 
