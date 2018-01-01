@@ -1,3 +1,4 @@
+#generates leetpeak versions of a word
 def leetspeak(word):
 	if word =="":
 		return []
@@ -5,13 +6,7 @@ def leetspeak(word):
 	subs = []
 	#start with e's and a's (most common substitutions)
 	wholedict = {'a':4, 'e':3, 'l':1, 'o':0, 's':5, 't':7, 'i':1}
-	#AE
-	#G?
-	#I
-	#L
-	#0
-	#s
-	#t
+	
 	letter = word[0]
 	words = leetspeak(word[1:])
 	if words ==[]:
@@ -34,6 +29,7 @@ def analyse_patterns():
 	
 	#ignoring passwords that are unique saves a lot of time, set to true to ignore anything with count 1
 	ignore1 = False
+	#decide to generate patterns that distinguish between uppercase and lowercase characters
 	case_sensitive = False
 
 	file = open("rockyou-withcount.txt", 'r')
@@ -66,10 +62,18 @@ def analyse_patterns():
 			pass
 
 	print numdict 
-#	file = open("files/patterns.txt", 'w+')
-#	file.write("")
-#	file.close()
 
+
+	#generate reverse dict for sorting
+	
+	#file = open("files/patterns.txt", 'w+')
+	#file.write("")
+	#file.close()
+
+
+	# TODO: symbols
+
+#finds the most common numbers put at the end of passwords
 def analyse_numbers():
 	import re
 	
@@ -102,6 +106,7 @@ def analyse_numbers():
 	file.writelines(nums)
 	file.close()	
 
+#combines possible pieces of information into possible passwords
 def combine(words, dates):
 	#common=word + num
 	return
