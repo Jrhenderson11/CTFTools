@@ -74,6 +74,12 @@ def robot(url):
 		print "no robots found :("
 	print "------------------\n"
 
+def get_cookies(url):
+	import requests
+	session = requests.Session()
+	response = session.get(url)
+	return session.cookies.get_dict()
+
 def print_intro():
 	print "   -----------------\n"
 	print "	  / _ \ "
@@ -134,8 +140,10 @@ def main():
 			print comment
 	print "------------------"
 
-
-
+	cookies = get_cookies(url)
+	print "cookies:"
+	for key in cookies:
+		print key + ": " + cookies[key]
 
 main()
 
@@ -143,3 +151,5 @@ main()
 #TODO:
 #  - look in css as well
 #  - look at cookies
+#  - requirements
+#  - detect link in clipboard
