@@ -16,6 +16,7 @@ A collection of scripts / tools I've made for capture the flag style challenges 
 
 ## TODO:
 
+ - fuzzer
  - forensic thingy?
  - steg?
  - password thingy

@@ -138,18 +138,19 @@ def main():
 	for comment in comments:
 		if not comment in flags:
 			print comment
+	print "\n"
 	print "------------------"
 
 	cookies = get_cookies(url)
-	print "cookies:"
-	for key in cookies:
-		print key + ": " + cookies[key]
+	if (not cookies == {}):
+		print "cookies:"
+		for key in cookies:
+			print key + ": " + cookies[key]
 
 main()
 
 
 #TODO:
 #  - look in css as well
-#  - look at cookies
 #  - requirements
 #  - detect link in clipboard
