@@ -12,9 +12,10 @@ A collection of scripts / tools I've made for capture the flag style challenges 
 - capper.py: A tool used in a CTF to reconstruct a message hidden in pcap obfuscated with ARP poisoning
 			 basically a demo of using python to interact with .pcap files and inspect packets
 
+- crypter.py: A really simple demo of using the Crypto library to encrypt/decrypt 
+
 ## TODO:
 
- - encryption stuff
  - forensic thingy?
  - steg?
  - password thingy
