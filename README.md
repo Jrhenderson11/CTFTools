@@ -15,7 +15,6 @@ A collection of scripts / tools I've made for capture the flag style challenges 
 
 - passwordpredicter.py: A bunch of useful functions for generating passwords (unfinished)
 
-
 ## Files:
 
  - numbers.txt: Ordered list of most common number combinations found after letters in passwords (based on rockyou)
