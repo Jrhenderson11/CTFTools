@@ -14,9 +14,8 @@ def reverse_dict(dictionary):
 def leetspeak(word):
 	if word =="":
 		return []
-	
 	subs = []
-	#start with e's and a's (most common substitutions)
+	#was originally going to sort by frequency of substitution but really makes no difference
 	wholedict = {'a':4, 'e':3, 'l':1, 'o':0, 's':5, 't':7, 'i':1}
 	
 	letter = word[0]
@@ -190,8 +189,6 @@ def analyse_numbers_advanced(fname):
 def combine(words, dates):
 	#common=word + num
 	return
-
-
 
 def main():
 	rockyou = "files/rockyou.txt"
