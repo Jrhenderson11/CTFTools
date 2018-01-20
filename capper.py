@@ -24,4 +24,3 @@ for packet in cap:
 		if right:
 			print ((packet.data.Data), end='')
 	#x=raw_input()
-
