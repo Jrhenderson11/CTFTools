@@ -6,7 +6,6 @@ gcc -z execstack -no-pie -fno-stack-protection
 objdump ./a.out -d : dissasemble
 
 
--------------------------------------------------------
 ##	gdb
 
 break <funcname>   : _install breakpoint in function call_
@@ -17,6 +16,7 @@ step / stepi       : step by 1 instruction
 conti			   : proceed to next breakpoint
 disas              : display dissasembled assembly code
 x/256xb $rsp 	   : display stack
+
 -------------------------------------------------------
 
 ##	Stack
