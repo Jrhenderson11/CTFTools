@@ -1,38 +1,33 @@
-# Reverse engineering Notes
+		
+		Reverse engineering Notes
 
+=============================================
 
 gcc -z execstack -no-pie -fno-stack-protection
 
 objdump ./a.out -d : dissasemble
 
-
-##	gdb
+-------------------------------------------------------
+	gdb
 
 break <\funcname>   : _install breakpoint in function call_
-
 break <\*address>   : install breakpoint at specific address in instructions
-
 run                : run program until breakpoint
-
 run < args		   : simulate running with arguments
-
 step / stepi       : step by 1 instruction
-
 conti			   : proceed to next breakpoint
-
 disas              : display dissasembled assembly code
-
 x/256xb $rsp 	   : display stack
 
 -------------------------------------------------------
 
-##	Stack
+	Stack
 
 RBP-RSP            : defines frame
 leave			   : collapse stack and exit
 
 -------------------------------------------------------
-## Python stuff
+	Python stuff
 
 python -c "some code": execute from command line
 
