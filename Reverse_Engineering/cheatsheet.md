@@ -8,13 +8,20 @@ objdump ./a.out -d : dissasemble
 
 ##	gdb
 
-break <funcname>   : _install breakpoint in function call_
-break <*address>   : install breakpoint at specific address in instructions
+break <\funcname>   : _install breakpoint in function call_
+
+break <\*address>   : install breakpoint at specific address in instructions
+
 run                : run program until breakpoint
+
 run < args		   : simulate running with arguments
+
 step / stepi       : step by 1 instruction
+
 conti			   : proceed to next breakpoint
+
 disas              : display dissasembled assembly code
+
 x/256xb $rsp 	   : display stack
 
 -------------------------------------------------------
