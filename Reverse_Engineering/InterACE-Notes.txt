@@ -1,0 +1,197 @@
+InterACE Reverse Engineering Workshop Notes
+
+size of stack to overwrite:
+	128 + 8 + 8
+payload = 128*A + CHK2 + CHK1
+
+Compiler command: 
+gcc -z execstack -no-pie -fno-stack-protection
+
+objdump ./a.out -d : dissasemble
+-------------------------------------------------------
+Attack 1:
+
+python -c "some code": execute from command line
+
+DEMO CODE:
+	import sys
+	sys.stdout.write(b"\x41"*128
+	+b"\xP\xA\xY\xL\xO\xA\xD"[::-1]); # slice notation 
+
+[::-1] Reverses end payload due to endianness
+python print cannot hanlde null bytes; stdout.write can
+
+
+#take a look at the output of attack in xxd
+python3 attack > bin; xxd bin
+
+works with -fno-stack-protection added, otherwise stack canaries prevent basic attacks
+
+-------------------------------------------------------
+Attack 2:
+Aim: Override RIP with stack smash (already loaded instr)
+
+STEP1:
+examine stack sizes, size will be 
+	(buffer + variables + RBP)
+before we reach the RIP
+
+
+STEP 2:
+
+select an address in the program to jump to
+
+STEP3:
+attack = write ((size*A) + address)
+
+because we overwrite RBP when we smash the stack RBP is messed up
+we either don't care or incorporate a legit RBP into the payload to ensure this doesn't happen
+
+-----------------------------------------------------------
+Attack 3: 
+Aim: Override RIP to point to instruction in executable stack to execute our code (RCE exploit)
+
+need an executable stack with -z exec
+
+STEP1:
+find size from buffer to RIP
+
+STEP2:
+need to insert padding (NOP sled) because of irregularities in different OS's etc
+
+=============================================
+		SHELLCODE
+
+For Attack 3 we need to write our own code to insert into stack to execute
+typically open a shell as payload so is called shellcode
+we write payload and compile nicely
+worked in 1996 due to executable stacks but not any more
+
+ASLR : Address Space layout randomisation
+Prevents predicatable stack locations so difficult to execute code on stack
+(turn off for easy demo)
+
+Calling system is not as useful as symboic links to upgraded shells lose 
+use execve instead
+(/opt/fc is fortune)
+
+nasm -felf64 shell.asm -o shell.o  : assembles assembly
+ld -o shell shell.o 			   : links shell.o
+objdump -d shell
+
+./bin2str.sh converts binary to string for insertion into payload injector 
+
+If not enough space on stack / buffer for shellcode, it can be inserted to an environment variable and then executed
+
+put more NOPs after your shellcode. This prevents overwriting the code you've just written to the stack 
+(unless you are a complete ninja)
+
+As long as no ASLR you can write program to print out stack address(showstack in VM)
+
+GDB is 60-70 bytes out
+
+
+ldd a.out: gives info on address space
+===============================================
+Attack 4:
+ASLR but executable stack, what can we do
+I we can locate stack we can exploit, we need to predict (or have massive NOP sled (impossible in 128 byte buffer))
+
+address space nowadays is too large to brute force
+
+ROP: Return Oriented Programming
+Gadget: any instruction ending with ret / call / anything that ends with popping addresses of stack
+
+Tool:
+Ropper is a tool for finding gadgets in executables
+ropper --file a.out --search "pop"
+looks for instructions
+
+ASLR is on so we don't know the target
+
+--search "jmp rsp"
+This instruction jumps to the stack, we don't need to know the addres
+exploit is in exp5.py
+	1st line fills 152 buffer to get to rip
+	2nd fills rip with "jmp rsp" address
+	3rd is our exploit 
+	(which will be written in the top of the instruction space which becomes the new stack pointer)
+
+compilers don't use "jmp rsp" anymore because they are so dangerous
+
+
+write address of ROP
+jump to the "jmp rsp" instruction
+write shellcode
+
+Still requires executable stack
+
+
+-------------------------------------
+Attack 5:
+Overcoming a non-executable stack
+we want execve
+we cannot execute shellcode
+we use a ROP chain
+
+overwrite buffer + vars
+overwrite rbp with address of gadget 1 (pop stack to register)
+
+we chain gadgets by alternating gadget addresses and values to pop into useful registers
+
+use ropper --search "pop"
+
+multiple pops in gadgets would have to be taken account of by padding the stack before planting value you want to be popped
+
+exp4.py 
+
+we can put a string on stack
+then later make sure we pop a pointer to that string into appropriate register for syscall
+
+linux sees // as /
+we can make / sleds to insert strings on the stack for syscalls without knowing the address
+
+	first we insert / sled and string
+	then gadget to pop rdi and return
+	then pointer to / sled or string
+	then gadget + val (irrelevant bc we just put null params to syscall)
+	then gadget + val (irrelevant bc we just put null params to syscall)
+	then execve address: printf will contain legit call to execve so we find address that way
+
+High level rop chain making tools scrape for rop gadgets and make exploit
+
+
+ROP chain recreate "jmp rsp"
+"push rsp" is used in function calls, we can hijack this and pop into $REGISTER then rop gadget which calls $REGISTER we have recreated "jmp rsp"
+rop chain to replicate jmp rsp, then payload
+in exp6.py does this
+
+exp6b.py has fewer commands to replicate jmp rsp
+
+------------------------------
+Overcoming non-executable stack AND ASLR
+exp7.py
+
+
+GOT override
+Global Offset Table
+
+first we legit swap i and j, we need to program to call puts
+then magic rop chain
+set params execve as in last attack
+call puts, which susbsequently triggers execve with loaded registers
+
+PLT handles libs
+readelf -r a.out | less
+shows trampoline
+
+puts is called (by external tool also), PLT is filled,
+edit plt with offset to another function (using ROP chain):
+	load offset in register and plt value in register
+	use ROP gadget to add registers
+	save into GOT
+	now we have edited the GOT 
+This allows us to call execve by calling puts
+This bypasses ASLR: start address is different but difference between them remains identical (in glibc)
+Attack is very dependent on version of glibc to calibrate offsets in the GOT
+----------------------------------
