@@ -1,4 +1,4 @@
-#Reverse engineering Notes
+# Reverse engineering Notes
 
 
 gcc -z execstack -no-pie -fno-stack-protection
@@ -9,7 +9,7 @@ objdump ./a.out -d : dissasemble
 -------------------------------------------------------
 ##	gdb
 
-break <funcname>   : install breakpoint in function call
+break <funcname>   : _install breakpoint in function call_
 break <*address>   : install breakpoint at specific address in instructions
 run                : run program until breakpoint
 run < args		   : simulate running with arguments
@@ -19,14 +19,13 @@ disas              : display dissasembled assembly code
 x/256xb $rsp 	   : display stack
 -------------------------------------------------------
 
--------
-	Stack
+##	Stack
 
 RBP-RSP            : defines frame 
 leave			   : collapse stack and exit
 
 -------------------------------------------------------
-
+## Python stuff
 
 python -c "some code": execute from command line
 
@@ -36,7 +35,9 @@ DEMO CODE:
 	sys.stdout.write(b"\x41"*128
 	+b"\xP\xA\xY\xL\xO\xA\xD"[::-1]); # slice notation 
 ```
-[::-1] Reverses end payload due to endianness
+b: write as bytes
+[::-1]: reverses end payload due to endianness
+
 python print cannot hanlde null bytes; stdout.write can
 
 Save payload to file and view:
