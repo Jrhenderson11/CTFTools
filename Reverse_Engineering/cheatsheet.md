@@ -28,7 +28,7 @@ x/256xb $rsp 	   : display stack
 
 ##	Stack
 
-RBP-RSP            : defines frame 
+RBP-RSP            : defines frame
 leave			   : collapse stack and exit
 
 -------------------------------------------------------
