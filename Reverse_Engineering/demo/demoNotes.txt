@@ -1,0 +1,12 @@
+1: make executable with chmod 755 ./vuln-chat
+
+2: Check whether the stack space is being randomised via ASLR
+run gdb 3 times on vuln-chat and examine stack location of main function
+
+	doing this reveals the function location is fixed at 0x08048590 (different on different systems)
+
+3: run objdump -d ./vuln-chat to examine function addresses, we see there is a function PrintFlag @ 0x0804856b 
+
+4: python exploit.py > bin; ./vuln-chat < bin; gdb -c core
+
+info reg
