@@ -25,3 +25,6 @@ https://github.com/jwagner/playitslowly
 Another useful tool for manipulating and playing audio files
 
 ##Useful Links:
+
+website with file headers:
+https://www.garykessler.net/library/file_sigs.html

@@ -9,11 +9,11 @@ Basic and easy to use hashcracker
 
 	john --wordlist=FILE
 
-use
+use	`john --show passwordfile` to view cracked hashes
 
-	john --show passwordfile
+###### Rules
 
-to view cracked hashes
+the `--rules` option manipulates the wordlists
 
 ### hashcat
 Better password cracker, uses GPU's
