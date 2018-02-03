@@ -15,13 +15,13 @@ use
 
 to view cracked hashes
 
-###hashcat
+### hashcat
 Better password cracker, uses GPU's
 
-###crunch
+### crunch
 generates wordlists
 
-###cewl
+### cewl
 builds wordlists from urls
 
 https://github.com/digininja/CeWL
