@@ -4,7 +4,7 @@
 ------------------------
 #   Tools:
 
-###John the Ripper
+### John the Ripper
 Basic and easy to use hashcracker
 
 	john --wordlist=FILE
@@ -16,6 +16,7 @@ Basic and easy to use hashcracker
 
 ###cewl
 https://github.com/digininja/CeWL
+
 ------------------------
 
 #   Lists:
