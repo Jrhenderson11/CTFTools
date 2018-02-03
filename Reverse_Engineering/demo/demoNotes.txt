@@ -10,3 +10,6 @@ run gdb 3 times on vuln-chat and examine stack location of main function
 4: python exploit.py > bin; ./vuln-chat < bin; gdb -c core
 
 info reg
+
+
+grep 8049a60

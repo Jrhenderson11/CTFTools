@@ -1,0 +1,11 @@
+Demo notes
+
+
+
+-------------------------
+Vuln1
+
+gcc -m32 -o vuln1 vuln1.c -fno-stack-protector
+
+
+
