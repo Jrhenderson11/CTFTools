@@ -2,7 +2,7 @@
 #       Password Cracking Stuff:
 
 ------------------------
-#   Tools:
+##   Tools:
 
 ### John the Ripper
 Basic and easy to use hashcracker
@@ -11,15 +11,19 @@ Basic and easy to use hashcracker
 
 	
 ###hashcat
+Better password cracker, uses GPU's
 
 ###crunch
+generates wordlists
 
 ###cewl
+builds wordlists from urls
+
 https://github.com/digininja/CeWL
 
 ------------------------
 
-#   Lists:
+##   Lists:
 
 rockyou
 /usr/share/wordlists/
