@@ -11,9 +11,9 @@ Basic and easy to use hashcracker
 
 use	`john --show passwordfile` to view cracked hashes
 
-###### Rules
+#### Rules
 
-the `--rules` option manipulates the wordlists
+the `--rules` option manipulates the wordlists used
 
 ### hashcat
 Better password cracker, uses GPU's

