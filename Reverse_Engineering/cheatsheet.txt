@@ -62,4 +62,5 @@ looks for instructions
 
 
 The leave instruction is equivalent to "mov esp,ebp+4, pop ebp" which moves the stack pointer all the way up to the saved base pointer, and gets the old base pointer from the stack.
- The ret instruction pops the stack into the program counter to resume the execution at the mov instruction in the calling function.
+
+The ret instruction pops the stack into the program counter to resume the execution at the mov instruction in the calling function.

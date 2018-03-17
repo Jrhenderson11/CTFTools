@@ -1,0 +1,7 @@
+ 	ftp://192.168.3.158/srv/ftp/hello.php
+
+ 	ftp://192.168.3.158/srv/ftp/php-reverse-shell.php
+
+ 	ftp://user:password@192.168.3.158:port/path
+
+ 	nc -lkp 1234
