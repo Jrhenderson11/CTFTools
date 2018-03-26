@@ -60,16 +60,16 @@ def menu():
 # ---- Array Stuff ----
 
 def diff_arrays(arr1, arr2):
-	xord = []
+	diffed = []
 
 	#xor data to get key
 	for i in range(0, len(arr1)):
 		if (i%2==0):
-			#xord.append(arr1[i]^arr2[i])
-			xord.append(arr1[i])
+			#diffed.append(arr1[i]^arr2[i])
+			diffed.append(arr1[i])
 		else:
-			xord.append(0)
-	return xord
+			diffed.append(0)
+	return diffed
 
 def xor_arrays(arr1, arr2):
 	
@@ -141,11 +141,11 @@ def bit_planes(arr):
 
 	return planes
 
-def save_planes(planes):
+def save_planes(planes, width, height):
 	fname = "plane"
 	for i in range(len(planes)):
 		fname = "plane" + str(i) + ".bmp"
-		new_image = construct_image(planes[i], 489, 366)
+		new_image = construct_image(planes[i], width, height)
 		new_image.save(fname, 'bmp')
 
 # ---- Menu Functions ----
@@ -309,10 +309,10 @@ def recombine_planes():
 	save_image(new_image)
 
 def get_planes():
-	print "enter first file: (default lena.tif)"
+	print "enter first file: (default image.png)"
 	fname = raw_input()
 	if fname=="":
-		fname = "lena.tif"
+		fname = "image.png"
 
 	image1 = Image.open(fname, 'r')
 	
@@ -328,10 +328,10 @@ def get_planes():
 			pix1.append(cpixel)
 		   # print cpixel
 	planes = bit_planes(pix1)
-	save_planes(planes)
+	save_planes(planes, width, height)
 
 def dither():
-	print("not working yet :p") 
+	printred("not working yet :p") 
 
 # ---- Image IO ----
 
