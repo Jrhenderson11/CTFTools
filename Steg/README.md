@@ -37,6 +37,12 @@ https://incoherency.co.uk/blog/stories/image-steganography.html
 ----------------------------------------------------------------------------
 ## My Tools:
 
+### stegger
+**`python stegger.py`**
+
+Does bloody loads of stuff.
+Basically a container for loads of image manipulation / steganography techniques. A bit WIP currently, but has a nice menu
+
 ### waver
 **`python3 waver.py`**
 
