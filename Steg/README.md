@@ -4,6 +4,7 @@
 ## Steganography Techniques
 
 Steganography is the art of hiding stuff blah blah blah, ancient romans / greeks blah blah blah
+
 As opposed to encryption or hashing the aim is more to hide the fact the additional information is there at all as a method of protecting it. It is commonly done by hiding text or another image in another legitimate file, thereby disguising it.
 
 **Bit plane slicing:**
@@ -12,11 +13,11 @@ Images are made up of an array of pixels. Ignoring the differences between diffe
 Because of the way binary (and any number base) works the digits / bits on the left contain a larger value than those on the right, the leftmost is the Most Significant Bit (MSB) and the rightmost is the LSB.
 This means that most of the value is encoded in the left bits of the number. Changing the MSB will roughly double or halve the value, whereas changing the LSB will add or subtract one.
 In terms of colour this means changing the MSB will result in a dramatic change of colour whereas changing the LSB will be unoticable (for a standard 8-bit colour image).
-An image composed only of the bits of one position e.g all the MSBs is called a **bit plane**. here are the 2 upper bit planes of the image Lena.png:
+An image composed only of the bits of one position e.g all the MSBs is called a **bit plane**. here are the 2 upper bit planes of the image Lucy-small.png:
 
 original:
 
-![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/Steg/lena.png "Original")
+![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/Steg/Lucy-small.png "Original")
 
 plane 0 (MSB):
 
@@ -25,7 +26,7 @@ plane 0 (MSB):
 plane 1 (2nd bit):
 
 ![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/Steg/plane1.bmp "2nd bit plane")
-
+You can view all the other planes as well in this folder.
 
 Because of this you can change the LSB (and actually quite a few of the last bits of the number) of the pixels with barely any effect on the visible image.
 This means a binary (2-bit colour, black and white) image could be created and exchanged for one of the planes of another image. If the plane replaced is an unsignificant one this will not be visible in the image and only visible when the image is split into its constituent planes
@@ -99,4 +100,24 @@ https://www.garykessler.net/library/file_sigs.html
 
 ## Other Stuff:
 
-The image of Lena is commonly used as an example for steganography, I don't know why, maybe she was a pioneer of some of the methods?
+While doing a steganography challenge in a CTF there was a picture of a woman, called Lena.tif. 
+Whilst researching different steganography methods I came accross a website that did online steganography, and in the sample images they had I found the same picture of the woman, also called Lena. I got kind of excited and thought I had found the exact tool they used to encode the image. But I hadn't.
+I kept coming across the image while looking up steganography stuff and realised it was just a common example image used for steganography.
+
+When writing the *Bit Plane slicing* section of this file I wanted to include some demo images, so used the example Lena.tif file and 2 of the bit planes I had created when analysing the file for the CTF. I still didn't know why this was the image commonly used as a demo but after spending ~17 hours staring at subtley different blurry versions of this image with QR codes in I felt that I might as well use this as my example. I put this text in this *Other Stuff* section: 
+
+	The image of Lena is commonly used as an example for steganography, I don't know why, maybe she was a pioneer of some of the methods?
+
+Later I realised the images were way too big, so I went to resize them and when I did I also decided to look up who Lena was. After looking through the wikipedia page of famous people called Lena (there are a lot) I found this:
+
+https://en.wikipedia.org/wiki/Lenna
+
+So the picture is a standard for all image processing, not just steganography but sadly it is from playboy, a deeply sexist publication. As also pointed out by the wikipedia page, using an image like that as a standard example is contributing to the sexism and male-dominance in science and computer science and as quoted in the wikipedia page has a "detrimental impact on aspiring female students in computer science".
+
+The page http://www.ee.cityu.edu.hk/~lmpo/lenna/Lenna97.html gives more detail and says she was invited to a conference on digital image processing as a special guest which is quite nice I suppose. Maybe even more interestingly the site says 
+	
+	Currently, Lenna lives near Stockholm and works for a government agency supervising handicapped employees archiving data using, appropriately, computers and scanners
+
+which is nice.
+
+But due to its sexist connotations I'm not going to use it as an example image, I'm going to use a picture of my cat instead.
