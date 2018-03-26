@@ -39,6 +39,7 @@ A file carving tool, based on **scalpel** but better. Analyses a file for files 
 Annoyingly if you run it twice it complains unless you delete the output folder with *rm -rf output*
 After installing uncomment lines in `/etc/foremost.conf` to be able to carve differnet file types
 
+----------------------------------------------------------------------------
 
 ## Useful Links:
 
