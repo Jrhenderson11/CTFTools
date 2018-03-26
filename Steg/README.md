@@ -4,7 +4,7 @@
 ##  Tools:
 
 ### strings
-	strings <file>
+`strings <file>`
 displays plaintext strings found in a file
 
 ### exiftool
