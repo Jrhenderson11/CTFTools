@@ -1,9 +1,9 @@
 #     Steganography notes
 
 ----------------------------------------------------------------------------
-## STEGANOGRAPHY TECHNIQUES
+## Steganography Techniques
 
-Steganography is the art of hiding stuff blah blah blah
+Steganography is the art of hiding stuff blah blah blah, ancient romans / greeks blah blah blah
 As opposed to encryption or hashing the aim is more to hide the fact the additional information is there at all as a method of protecting it. It is commonly done by hiding text or another image in another legitimate file, thereby disguising it.
 
 **Bit plane slicing:**
@@ -15,12 +15,15 @@ In terms of colour this means changing the MSB will result in a dramatic change 
 An image composed only of the bits of one position e.g all the MSBs is called a **bit plane**. here are the 2 upper bit planes of the image Lena.png:
 
 original:
+
 ![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/Steg/lena.png "Original")
 
 plane 0 (MSB):
+
 ![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/Steg/plane0.bmp "MSB plane")
 
 plane 1 (2nd bit):
+
 ![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/Steg/plane1.bmp "2nd bit plane")
 
 
