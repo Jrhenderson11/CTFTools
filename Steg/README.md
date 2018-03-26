@@ -40,7 +40,7 @@ https://incoherency.co.uk/blog/stories/image-steganography.html
 ### waver
 **`python3 waver.py`**
 
-waver is a tool made for the volga CTF 2018 to decode an image into a wav file, I'm working on implemnting the reverse process as well
+waver is a tool made for the volga CTF 2018 to decode an image into a wav file, I'm working on implemnting the reverse process as well, take a look at *sound.png* and *sound.wav* to see the input / output
 
 ----------------------------------------------------------------------------
 ## Other Tools:
