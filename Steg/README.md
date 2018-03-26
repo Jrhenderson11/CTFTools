@@ -35,7 +35,15 @@ In theory this allows any alteration of an image to be found by analysing the ex
 https://incoherency.co.uk/blog/stories/image-steganography.html
 
 ----------------------------------------------------------------------------
-##  Tools:
+## My Tools:
+
+### waver
+**`python3 waver.py`**
+
+waver is a tool made for the volga CTF 2018 to decode an image into a wav file, I'm working on implemnting the reverse process as well
+
+----------------------------------------------------------------------------
+## Other Tools:
 
 ### strings
 **`strings <file>`**
