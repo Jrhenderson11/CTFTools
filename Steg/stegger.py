@@ -51,7 +51,7 @@ def menu():
 	elif (num==4):
 		and_images()
 	elif (num==5):
-		save_planes()
+		get_planes()
 	elif (num==6):
 		recombine_planes()
 	elif (num==7):
@@ -145,7 +145,7 @@ def save_planes(planes):
 	fname = "plane"
 	for i in range(len(planes)):
 		fname = "plane" + str(i) + ".bmp"
-		new_image = construct_image(planes[i], 512, 512)
+		new_image = construct_image(planes[i], 489, 366)
 		new_image.save(fname, 'bmp')
 
 # ---- Menu Functions ----
