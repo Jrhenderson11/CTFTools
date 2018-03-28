@@ -44,6 +44,11 @@ https://incoherency.co.uk/blog/stories/image-steganography.html
 Does bloody loads of stuff.
 Basically a container for loads of image manipulation / steganography techniques. A bit WIP currently, but has a nice menu
 
+### qr-fixer
+**`python3 qr-fixer.py`**
+
+During the inter-ACE and volga CTFs there were a couple of challenges involving QR codes which didn't scan, so after spending hours manually editing them in an image editor I decided to make a tool that automated this stuff. Currently it only has one basic mode but I'm working on adding more.
+
 ### waver
 **`python3 waver.py`**
 

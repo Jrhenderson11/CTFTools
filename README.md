@@ -27,10 +27,6 @@ I would like to have added the actual rockyou files, but uncompressed they excee
 
 ## TODO:
  
- - put add / subtract method in 2 time pad
  - finish passwordpredicter
  - fuzzer
- - forensic thingy?
- - steg?
- - notes
 
