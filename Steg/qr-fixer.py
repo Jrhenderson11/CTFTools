@@ -1,5 +1,6 @@
 import os
 import re
+import math
 import numpy
 from os import listdir, walk
 from os.path import isfile, join
@@ -25,7 +26,8 @@ def print_intro():
 	print("\033[1m\033[97m            -- Fixer --\033[0m")
 
 def print_menu_items():
-	print("	[1] Basic QR reconstruction\n")
+	print("	[1] Basic QR reconstruction")
+	print("	[2] Convert to black and white\n")
 
 def menu():
 	os.system("clear")
@@ -33,7 +35,7 @@ def menu():
 	print("\n")	
 	print_menu_items()
 	num = int(input())
-	while not (num>0 and num<2):
+	while not (num>0 and num<3):
 		os.system("clear")
 		print_intro()
 		print("         \033[31m\033[1m  invalid input \033[0m\n")
@@ -42,11 +44,13 @@ def menu():
 
 	if (num==1):
 		basic_repair()
+	if (num==2):
+		flatten_image()
 
 # ---- Main Functions ----
 
 def basic_repair():
-	#different qr code versions have different numbers of blocks, on eof the common ones is 29
+	#different qr code versions have different numbers of blocks, one of the common ones is 29
 	qr_size = 29
 
 	(pixels, width, height) = get_image_data("qr.png")
@@ -69,7 +73,8 @@ def basic_repair():
 					#debug
 					#print pixel
 
-					if (pixel == (0,0,0,255)):
+					#black
+					if (pixel == (0,0,0)):
 						colours[1] = colours[1] + 1					
 					else:
 						colours[0] = colours[0] + 1
@@ -89,9 +94,6 @@ def basic_repair():
 	qr_image = make_qr_image(blocks, width, height)
 	qr_image.show()
 	save_image(qr_image)
-
-#def make_black(qr_size):
-
 
 def overwrite_fixed_patterns(qr_array, qr_size):
 	if (qr_size==29):
@@ -146,6 +148,17 @@ def overwrite_fixed_patterns(qr_array, qr_size):
 
 	return qr_array
 
+def flatten_image():
+	(pixels, width, height) = get_image_data("Lucy.jpg")
+	newpixels = numpy.zeros((width, height))
+	for x in range(width):
+		for y in range(height):
+			newval = 255 * math.floor(pixels[x,y][0]/128)
+			newpixels[x,y] = newval#, newval, newval)
+
+	image = construct_image_2d(newpixels, width, height)
+	image.show()
+
 #
 # ---- Image IO ----
 
@@ -163,6 +176,7 @@ def get_image_data(default):
 		exists = False
 
 	while (exists==False):
+		exists = True
 		printred("File " + fname + " not found")
 		print("enter first file: (default " + default + ")")
 		fname = input()
@@ -216,6 +230,18 @@ def construct_image(array, width, height):
 		data[(xwidth, xheight)] = array[i]
 	return new_image
 
+def construct_image_2d(array, width, height):
+
+	new_image = Image.new('RGB', (width, height))
+	data = new_image.load()
+
+	#print(len(array))
+	for x in range(width):
+		for y in range(height):
+			val = array[x, y]
+			data[x, y] = int(val), int(val),int(val) 
+	return new_image
+
 def save_image(image):
 	num = get_num_files("qr_new")
 	print("enter output file: (default qr_new"+str(num)+".png)")
@@ -239,5 +265,4 @@ except KeyboardInterrupt as e:
 
 #TODO:
 # fix basic lol
-# change base colour (plane0ise)
 # brute force based on certainty
