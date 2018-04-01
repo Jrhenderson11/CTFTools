@@ -46,7 +46,7 @@ def menu():
 # ---- Main Functions ----
 
 def basic_repair():
-	#different qr code versions have different numbers of blocks, on eof the common ones is29
+	#different qr code versions have different numbers of blocks, on eof the common ones is 29
 	qr_size = 29
 
 	(pixels, width, height) = get_image_data("qr.png")
@@ -84,46 +84,70 @@ def basic_repair():
 			else:
 				blocks[block_x, block_y] = 0
 
+	blocks = overwrite_fixed_patterns(blocks, qr_size)
+
 	qr_image = make_qr_image(blocks, width, height)
-	#qr_image.show()
+	qr_image.show()
 	save_image(qr_image)
 
+#def make_black(qr_size):
+
+
+def overwrite_fixed_patterns(qr_array, qr_size):
+	if (qr_size==29):
+		
+		x=0
+		y=0
+
+		#vertical
+		for y2 in range(22,29):
+			qr_array[0, y2] = 1
+			qr_array[6, y2] = 1
+
+		for (x,y) in [(0,0), (22,0), (0,22)]:
+			#corner boxes
+			#horizontal lines
+			for x2 in range(7):
+				qr_array[x+x2, y] = 1
+				qr_array[x+x2, y+6] = 1
+			
+			#vertical
+			for y2 in range(7):
+				qr_array[x, y2] = 1
+				qr_array[x+6, y2] = 1
+
+			#centre
+			for y2 in range(3):
+				for x2 in range(3):
+					qr_array[x+2+x2,y+2+y2] = 1
+	
+			#white outline
+			for x2 in [-1, 8]:
+				for y2 in [-1, 8]:	
+					if ((x+x2) > 0 and (x+x2) < 29) and ((y+y2) > 0 and (y+y2) < 29):
+						qr_array[x+x2, y+y2] = 0
+
+		#dotted lines
+		for x in range(7, 22):
+			if x%2==0:
+				qr_array[x, 6]=1
+				qr_array[6, x]=1
+			else:
+				qr_array[x, 6]=0
+				qr_array[6, x]=0
+
+		#small alignment square
+		for x in range(20, 25):
+			qr_array[x,20] = 1
+			qr_array[x,24] = 1
+			qr_array[20,x] = 1
+			qr_array[24,x] = 1
+		qr_array[22,22] = 1
+
+	return qr_array
+
+#
 # ---- Image IO ----
-
-def get_2_image_data(default1, default2):
-	print("enter first file: (default " + default1 + ")")
-	fname = input()
-	if fname=="":
-		fname = default1
-	print("enter second file: (default " + default1 + ")")
-	fname2 = input()
-	if fname2=="":
-		fname2 = default2
-
-	image1 = Image.open(fname, 'r')
-	image2 = Image.open(fname2, 'r')
-
-	pixels = image1.load()
-	
-	pixels2 = image2.load() 
-	width, height = image1.size
-	
-	#load pixel data into arrays
-	pix1 = []
-	
-	for x in range(width):
-		for y in range(height):
-			cpixel = pixels[x, y]
-			pix1.append(cpixel)
-		   # print cpixel
-
-	pix2 = []
-	for x in range(width):
-		for y in range(height):
-			cpixel = pixels2[x, y]
-			pix2.append(cpixel)
-
-	return (pix1, pix2)
 
 def get_image_data(default):
 	print("enter first file: (default " + default + ")")
@@ -131,7 +155,24 @@ def get_image_data(default):
 	if fname=="":
 		fname = default
 
-	image = Image.open(fname, 'r')
+	exists = True
+
+	try:
+		image = Image.open(fname, 'r')
+	except FileNotFoundError as e:
+		exists = False
+
+	while (exists==False):
+		printred("File " + fname + " not found")
+		print("enter first file: (default " + default + ")")
+		fname = input()
+		if fname=="":
+			fname = default		
+		try:
+			image = Image.open(fname, 'r')
+		except FileNotFoundError as e:
+			exists = False
+
 	pixels = image.load()
 	
 	width, height = image.size
@@ -158,7 +199,7 @@ def make_qr_image(qr_array, width, height):
 					x = ((block_x*height/qr_size) + small_x)
 					y = ((block_y*height/qr_size) + small_y)
 					block = qr_array[block_x, block_y] 
-					pixels[(x, y)] = int(block)
+					pixels[(x, y)] = (255-(255 * int(block)), 255-(255 * int(block)), 255-(255 * int(block))) 
 
 	return qr_image
 
@@ -195,3 +236,8 @@ try:
 	menu()
 except KeyboardInterrupt as e:
 	printred("quitting")
+
+#TODO:
+# fix basic lol
+# change base colour (plane0ise)
+# brute force based on certainty
