@@ -34,14 +34,20 @@ def menu():
 	print_intro()
 	print("\n")	
 	print_menu_items()
-	num = int(input())
+	try:
+		num = int(input())
+	except ValueError as e:
+		num = -1
 	while not (num>0 and num<3):
 		os.system("clear")
 		print_intro()
 		print("         \033[31m\033[1m  invalid input \033[0m\n")
 		print_menu_items()
-		num = int(input())
-
+		try:
+			num = int(input())
+		except ValueError as e:
+			num = -1
+			
 	if (num==1):
 		basic_repair()
 	if (num==2):
