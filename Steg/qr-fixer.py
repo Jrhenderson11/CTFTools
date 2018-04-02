@@ -7,10 +7,6 @@ from os import listdir, walk
 from os.path import isfile, join
 from PIL import Image, ImageFile
 
-# control stuff
-MINIMAL = False
-
-
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def printgreen(text):
@@ -18,6 +14,15 @@ def printgreen(text):
 
 def printred(text):
 	print('\033[31m' + text + '\033[0m')
+
+def print_help():
+	printgreen("		qr-fixer help menu")
+	print('''
+		Usage: python3 qr-fixer.py [Options]
+		OPTIONS:
+		  - help:	unsurprisingly prints this menu
+		  - minimal:	doesn't clear screen or display intro art
+		''')
 
 def print_intro():
 	print("\033[34m")
@@ -71,8 +76,14 @@ def menu():
 # looks at arguments and does some stuff? 
 def interpret_args():
 	args = sys.argv[1:]
-	print(args)
-
+	#print(args)
+	if 'help' in args:
+		print_help()
+		exit()
+	if 'minimal' in args:
+		global MINIMAL
+		MINIMAL = True
+	
 # ---- Main Functions ----
 def basic_repair():
 	#different qr code versions have different numbers of blocks, one of the common ones is 29
@@ -282,6 +293,10 @@ def get_num_files(base):
 			onlyfiles += " " + f
 	#print(str(len(re.findall((base + "\d+\."), onlyfiles))) + " files found called " + base) 
 	return len(re.findall((base + "\d+\."), onlyfiles))
+
+
+global MINIMAL
+MINIMAL = False
 
 try:
 	interpret_args()
