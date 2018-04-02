@@ -305,9 +305,9 @@ except KeyboardInterrupt as e:
 	printred("quitting")
 
 #TODO:
-# minimal mode
 # fix basic
 # brute force based on certainty
 # input log
 # ls command
 # side ls
+# conf file to configure minimal 
