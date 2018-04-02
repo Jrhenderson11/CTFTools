@@ -394,3 +394,9 @@ try:
 	menu()
 except KeyboardInterrupt as e:
 	printred("quitting")
+
+#TODO: 
+# interpret args
+# ls
+# side ls
+# minimal

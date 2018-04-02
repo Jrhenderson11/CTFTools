@@ -1,10 +1,15 @@
 import os
 import re
+import sys
 import math
 import numpy
 from os import listdir, walk
 from os.path import isfile, join
 from PIL import Image, ImageFile
+
+# control stuff
+MINIMAL = False
+
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
@@ -30,31 +35,45 @@ def print_menu_items():
 	print("	[2] Convert to black and white\n")
 
 def menu():
-	os.system("clear")
-	print_intro()
-	print("\n")	
-	print_menu_items()
-	try:
-		num = int(input())
-	except ValueError as e:
-		num = -1
-	while not (num>0 and num<3):
+	if not MINIMAL:
 		os.system("clear")
 		print_intro()
+		print("\n")	
+	print_menu_items()
+	try:
+		i = input()
+		num = int(i)
+	except ValueError as e:
+		if (i=="q"):
+			exit()
+		num = -1
+	while not (num>0 and num<3):
+		if not MINIMAL:
+			os.system("clear")
+			print_intro()
 		print("         \033[31m\033[1m  invalid input \033[0m\n")
-		print_menu_items()
+		if not MINIMAL:
+			print_menu_items()
 		try:
-			num = int(input())
+			i = input()
+			num = int(i)
 		except ValueError as e:
+			if (i=="q"):
+				exit()
 			num = -1
-			
+
 	if (num==1):
 		basic_repair()
 	if (num==2):
 		flatten_image()
 
-# ---- Main Functions ----
+# ---- Unclassified Stuff ----
+# looks at arguments and does some stuff? 
+def interpret_args():
+	args = sys.argv[1:]
+	print(args)
 
+# ---- Main Functions ----
 def basic_repair():
 	#different qr code versions have different numbers of blocks, one of the common ones is 29
 	qr_size = 29
@@ -265,10 +284,15 @@ def get_num_files(base):
 	return len(re.findall((base + "\d+\."), onlyfiles))
 
 try:
+	interpret_args()
 	menu()
 except KeyboardInterrupt as e:
 	printred("quitting")
 
 #TODO:
-# fix basic lol
+# minimal mode
+# fix basic
 # brute force based on certainty
+# input log
+# ls command
+# side ls
