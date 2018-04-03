@@ -24,27 +24,64 @@ def print_help():
 		  - minimal:	doesn't clear screen or display intro art
 		''')
 
-def print_intro():
-	print("\033[34m")
-	print("           .::::::::    ::::::::: ")
-	print("          :+:    :+:   :+:    :+: ")
-	print("         +:+    +:+   +:+    +:+  ")
-	print("        +#+    +:+   +#++:++#:    ")
-	print("       +#+    +#+   +#+    +#+    ")
-	print("      #+#    #+#   #+#    #+#     ")
-	print("      ########### ###    ###      \n")
-	print("\033[1m\033[97m            -- Fixer --\033[0m")
+def attach_ls(text):
 
-def print_menu_items():
-	print("	[1] Basic QR reconstruction")
-	print("	[2] Convert to black and white\n")
+	files = []
+	max_length = 0
+	for f in listdir("./"):
+		if isfile(join("./", f)):
+			files.append(f)
+			if len(f) > max_length:
+				max_length = len(f)
+
+	width = max_length + 4
+	lines = text.split("\n")
+	offset = 36
+	#do top
+	lines[0] = lines[0][:offset] +"\033[92m"+"	"*7+ " files:"
+	#do 2nd
+	lines[1] = "\033[34m" + lines[1][:offset] +"\033[92m "+ "=" * width
+	
+	#do middle
+	for i in range(2, len(lines)-1):
+		if lines[i]=="":
+			lines[i] = "\033[34m" + lines[i] + "\033[92m"+("	"*6)+ " "*2+ "| " + files[i] + "\033[0m"
+		else:
+			lines[i] = "\033[34m" + lines[i]+ (" " * (offset-len(lines[i]))) +"\033[92m"+("	"*(4-int(len(lines[i])/4)))+ "| " + files[i] + "\033[0m"
+
+	#do last
+	lines[len(lines)-1] = "\033[34m" + lines[len(lines)-1][:offset] +"\033[92m"+"	"*6 + (" " *2)+ "=" * width + "\033[0m"
+
+	for line in lines:
+		line = line + "\n"
+	return "\n".join(lines)
+
+
+def print_intro():
+	text = '''\033[34m
+	         .::::::::    :::::::::  	  	
+	        :+:    :+:   :+:    :+: 	
+	       +:+    +:+   +:+    +:+  	
+	      +#+    +:+   +#++:++#:    	
+	     +#+    +#+   +#+    +#+    	
+	    #+#    #+#   #+#    #+#     	
+	    ########### ###    ###  	   	  \n
+\033[1m\033[97m	            -- Fixer --			  \033[0m'''
+	return text
+
+def get_menu_text():
+	return '''	\033[97m[1] Basic QR reconstruction		  
+	\033[97m[2] Convert to black and white		  \n
+'''
 
 def menu():
+	text = ""
 	if not MINIMAL:
 		os.system("clear")
-		print_intro()
-		print("\n")	
-	print_menu_items()
+		text = print_intro()
+		text += "\n\n"	
+	text += get_menu_text()
+	print(attach_ls(text))
 	try:
 		i = input()
 		num = int(i)
@@ -53,12 +90,14 @@ def menu():
 			exit()
 		num = -1
 	while not (num>0 and num<3):
+		text = ""
 		if not MINIMAL:
 			os.system("clear")
-			print_intro()
-		print("         \033[31m\033[1m  invalid input \033[0m\n")
+			text = print_intro()
+		text += "\n         	\033[31m\033[1m  invalid input \033[0m		  \n"
 		if not MINIMAL:
-			print_menu_items()
+			text+=get_menu_text()
+		print(attach_ls(text))
 		try:
 			i = input()
 			num = int(i)
@@ -83,7 +122,7 @@ def interpret_args():
 	if 'minimal' in args:
 		global MINIMAL
 		MINIMAL = True
-	
+
 # ---- Main Functions ----
 def basic_repair():
 	#different qr code versions have different numbers of blocks, one of the common ones is 29
@@ -104,13 +143,10 @@ def basic_repair():
 					x = ((block_x*height/qr_size) + small_x)
 					y = ((block_y*height/qr_size) + small_y)
 
-					pixel = pixels[x, y] 
-
-					#debug
-					#print pixel
+					pixel = 255 * math.floor(pixels[x,y][0]/128)
 
 					#black
-					if (pixel == (0,0,0)):
+					if (pixel == 0):
 						colours[1] = colours[1] + 1					
 					else:
 						colours[0] = colours[0] + 1
@@ -194,6 +230,7 @@ def flatten_image():
 
 	image = construct_image_2d(newpixels, width, height)
 	image.show()
+	save_image(image)
 
 #
 # ---- Image IO ----
@@ -294,7 +331,6 @@ def get_num_files(base):
 	#print(str(len(re.findall((base + "\d+\."), onlyfiles))) + " files found called " + base) 
 	return len(re.findall((base + "\d+\."), onlyfiles))
 
-
 global MINIMAL
 MINIMAL = False
 
@@ -305,9 +341,13 @@ except KeyboardInterrupt as e:
 	printred("quitting")
 
 #TODO:
+# fix overwrite basic
 # fix basic
 # brute force based on certainty
 # input log
 # ls command
 # side ls
 # conf file to configure minimal 
+# crop to size
+# show lines
+# stop showing lines when I don't want them
