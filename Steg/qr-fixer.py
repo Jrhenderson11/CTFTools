@@ -81,7 +81,10 @@ def menu():
 		text = print_intro()
 		text += "\n\n"	
 	text += get_menu_text()
-	print(attach_ls(text))
+	if not MINIMAL:
+		print(attach_ls(text))
+	else:
+		print(text)
 	try:
 		i = input()
 		num = int(i)
@@ -97,7 +100,10 @@ def menu():
 		text += "\n         	\033[31m\033[1m  invalid input \033[0m		  \n"
 		if not MINIMAL:
 			text+=get_menu_text()
-		print(attach_ls(text))
+		if not MINIMAL:
+			print(attach_ls(text))
+		else:
+			print(text)
 		try:
 			i = input()
 			num = int(i)
