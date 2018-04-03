@@ -29,7 +29,7 @@ def attach_ls(text):
 	files = []
 	max_length = 0
 	for f in listdir("./"):
-		if isfile(join("./", f)):
+		if isfile(join("./", f)) and (len(re.findall(r'(png|jpg|tif|bmp)', f)) > 0):
 			files.append(f)
 			if len(f) > max_length:
 				max_length = len(f)
@@ -38,7 +38,7 @@ def attach_ls(text):
 	lines = text.split("\n")
 	offset = 36
 	#do top
-	lines[0] = lines[0][:offset] +"\033[92m"+"	"*7+ " files:"
+	lines[0] = lines[0][:offset] +"\033[92m"+"	"*7+ " images:"
 	#do 2nd
 	lines[1] = "\033[34m" + lines[1][:offset] +"\033[92m "+ "=" * width
 	
