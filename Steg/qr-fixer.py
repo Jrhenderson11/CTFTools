@@ -22,6 +22,7 @@ def print_help():
 		OPTIONS:
 		  - help:	unsurprisingly prints this menu
 		  - minimal:	doesn't clear screen or display intro art
+		  - qrsize=<n>  sets QR size to a specific value (use 25, 29 or 33)
 		''')
 
 def attach_ls(text):
