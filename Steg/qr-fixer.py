@@ -25,7 +25,6 @@ def print_help():
 		''')
 
 def attach_ls(text):
-
 	files = []
 	max_length = 0
 	for f in listdir("./"):
@@ -56,7 +55,6 @@ def attach_ls(text):
 		line = line + "\n"
 	return "\n".join(lines)
 
-
 def print_intro():
 	text = '''\033[34m
 	         .::::::::    :::::::::  	  	
@@ -71,7 +69,8 @@ def print_intro():
 
 def get_menu_text():
 	return '''	\033[97m[1] Basic QR reconstruction		  
-	\033[97m[2] Convert to black and white		  \n
+	\033[97m[2] Convert to black and white		  
+	\033[97m[3] Overlay grid  		\n
 '''
 
 def menu():
@@ -92,7 +91,7 @@ def menu():
 		if (i=="q"):
 			exit()
 		num = -1
-	while not (num>0 and num<3):
+	while not (num>0 and num<4):
 		text = ""
 		if not MINIMAL:
 			os.system("clear")
@@ -116,8 +115,11 @@ def menu():
 		basic_repair()
 	if (num==2):
 		flatten_image()
+	if (num==3):
+		overlay_grid()
 
 # ---- Unclassified Stuff ----
+
 # looks at arguments and does some stuff? 
 def interpret_args():
 	args = sys.argv[1:]
@@ -238,6 +240,20 @@ def flatten_image():
 	image.show()
 	save_image(image)
 
+def overlay_grid():
+	qr_size = 33
+
+	(pixels, width, height) = get_image_data("demo2.jpg")
+	block_width = (width / qr_size)
+	block_height = (height / qr_size)
+
+	for x in range(width):
+		for y in range(height):
+			if int(x%block_width)==0 or int(y%block_height) == 0:
+				pixels[x,y] = (255,0,0)
+
+	image = construct_image_2d_tuples(pixels, width, height)
+	image.show()
 #
 # ---- Image IO ----
 
@@ -321,6 +337,18 @@ def construct_image_2d(array, width, height):
 			data[x, y] = int(val), int(val),int(val) 
 	return new_image
 
+def construct_image_2d_tuples(array, width, height):
+
+	new_image = Image.new('RGB', (width, height))
+	data = new_image.load()
+
+	#print(len(array))
+	for x in range(width):
+		for y in range(height):
+			val = array[x, y]
+			data[x, y] = val 
+	return new_image
+
 def save_image(image):
 	num = get_num_files("qr_new")
 	print("enter output file: (default qr_new"+str(num)+".png)")
@@ -352,8 +380,6 @@ except KeyboardInterrupt as e:
 # brute force based on certainty
 # input log
 # ls command
-# side ls
 # conf file to configure minimal 
 # crop to size
-# show lines
 # stop showing lines when I don't want them
