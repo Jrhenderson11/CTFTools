@@ -139,8 +139,7 @@ def interpret_args():
 # ---- Main Functions ----
 def basic_repair():
 	#different qr code versions have different numbers of blocks, one of the common ones is 29
-	#qr_size = 29
-	print(qr_size)
+	
 	(pixels, width, height) = get_image_data("qr.png")
 
 	blocks = numpy.zeros((qr_size, qr_size))
@@ -153,8 +152,8 @@ def basic_repair():
 			for small_y in range(int(height/qr_size)):
 				for small_x in range(int(height/qr_size)):
 					
-					x = ((block_x*height/qr_size) + small_x)
-					y = ((block_y*height/qr_size) + small_y)
+					x = (int(block_x*width/qr_size) + small_x)
+					y = (int(block_y*height/qr_size) + small_y)
 
 					pixel = 255 * math.floor(pixels[x,y][0]/128)
 
