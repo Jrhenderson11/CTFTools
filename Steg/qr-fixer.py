@@ -130,12 +130,16 @@ def interpret_args():
 	if 'minimal' in args:
 		global MINIMAL
 		MINIMAL = True
+	for arg in args:
+		if len(re.findall(r'^qrsize=\d+$', arg))>0:
+			global qr_size
+			qr_size = int(re.sub("qrsize=", "", arg))
 
 # ---- Main Functions ----
 def basic_repair():
 	#different qr code versions have different numbers of blocks, one of the common ones is 29
-	qr_size = 29
-
+	#qr_size = 29
+	print(qr_size)
 	(pixels, width, height) = get_image_data("qr.png")
 
 	blocks = numpy.zeros((qr_size, qr_size))
@@ -169,13 +173,13 @@ def basic_repair():
 			else:
 				blocks[block_x, block_y] = 0
 
-	blocks = overwrite_fixed_patterns(blocks, qr_size)
+	blocks = overwrite_fixed_patterns(blocks)
 
 	qr_image = make_qr_image(blocks, width, height)
 	qr_image.show()
 	save_image(qr_image)
 
-def overwrite_fixed_patterns(qr_array, qr_size):
+def overwrite_fixed_patterns(qr_array):
 	if (qr_size==29):
 		
 		x=0
@@ -241,7 +245,7 @@ def flatten_image():
 	save_image(image)
 
 def overlay_grid():
-	qr_size = 33
+	#qr_size = 29
 
 	(pixels, width, height) = get_image_data("demo2.jpg")
 	block_width = (width / qr_size)
@@ -254,10 +258,12 @@ def overlay_grid():
 
 	image = construct_image_2d_tuples(pixels, width, height)
 	image.show()
+
 #
 # ---- Image IO ----
 
 def get_image_data(default):
+	
 	print("enter first file: (default " + default + ")")
 	fname = input()
 	if fname=="":
@@ -368,6 +374,9 @@ def get_num_files(base):
 global MINIMAL
 MINIMAL = False
 
+global qr_size
+qr_size = 29
+
 try:
 	interpret_args()
 	menu()
@@ -376,6 +385,8 @@ except KeyboardInterrupt as e:
 
 #TODO:
 # fix overwrite basic
+# remove hardcoded grid size
+# improve rgb interpretation
 # fix basic
 # brute force based on certainty
 # input log
@@ -383,3 +394,5 @@ except KeyboardInterrupt as e:
 # conf file to configure minimal 
 # crop to size
 # stop showing lines when I don't want them
+# deduce qr size / version
+# highlight differences
