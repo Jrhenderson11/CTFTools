@@ -4,13 +4,17 @@ def char_to_int(char):
 def int_to_char(num):
 	return chr((num%26)+96)
 
-text = "apple"
+text = "the quick brown fox jumped over the lazy dog"
 res = []
 
 for i in range(1, 27):
 	current = ""
 	for char in text:
-		shifted = int_to_char(char_to_int(char) + i)
+		#check for actual letter
+		if (ord(char) > 64 and ord(char) < 91) or (ord(char) > 96 and ord(char) < 122):
+			shifted = int_to_char(char_to_int(char) + i)
+		else:
+			shifted = char
 		current += shifted
 	res.append(current)
 
@@ -28,7 +32,7 @@ for result in res:
 		else:
 			current += word
 		current += " "
-		print(str(i) + ": " + current)
+	print(str(i) + ": " + current)
 #TODO:
 # add command line params
 #improve dict with pickle / hash table
