@@ -192,6 +192,13 @@ def overwrite_fixed_patterns(qr_array):
 
 		for (x,y) in [(0,0), (22,0), (0,22)]:
 			#corner boxes
+			
+			#white outline
+			for x2 in range(-1, 8):
+				for y2 in (-1, 8):	
+					if ((x+x2) > 0 and (x+x2) < 29) and ((y+y2) > 0 and (y+y2) < 29):
+						qr_array[x+x2, y+y2] = 0
+
 			#horizontal lines
 			for x2 in range(7):
 				qr_array[x+x2, y] = 1
@@ -207,11 +214,6 @@ def overwrite_fixed_patterns(qr_array):
 				for x2 in range(3):
 					qr_array[x+2+x2,y+2+y2] = 1
 	
-			#white outline
-			for x2 in [-1, 8]:
-				for y2 in [-1, 8]:	
-					if ((x+x2) > 0 and (x+x2) < 29) and ((y+y2) > 0 and (y+y2) < 29):
-						qr_array[x+x2, y+y2] = 0
 
 		#dotted lines
 		for x in range(7, 22):
@@ -385,9 +387,7 @@ except KeyboardInterrupt as e:
 
 #TODO:
 # fix overwrite basic
-# remove hardcoded grid size
 # improve rgb interpretation
-# fix basic
 # brute force based on certainty
 # input log
 # ls command
