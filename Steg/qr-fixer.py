@@ -237,9 +237,25 @@ def overwrite_fixed_patterns(qr_array):
 def flatten_image():
 	(pixels, width, height) = get_image_data("Lucy.jpg")
 	newpixels = numpy.zeros((width, height))
+
+	#get max and min val
+	midsum = 0
 	for x in range(width):
 		for y in range(height):
-			newval = 255 * math.floor(pixels[x,y][0]/128)
+			avg = (pixels[x,y][0] + pixels[x,y][1] + pixels[x,y][2]) / 3	
+			midsum+=avg
+
+	middle = midsum / (width*height) 
+
+
+	for x in range(width):
+		for y in range(height):
+			avg = (pixels[x,y][0] + pixels[x,y][1] + pixels[x,y][2]) / 3
+			#adjust flattening to match max and min within a range
+
+			newval = 255 * math.floor(avg/(middle/2))
+			#print("----------\n" + str(middle) + ": " + str(avg) + str(newval))
+			#print(newval)
 			newpixels[x,y] = newval#, newval, newval)
 
 	image = construct_image_2d(newpixels, width, height)
@@ -387,11 +403,11 @@ except KeyboardInterrupt as e:
 
 #TODO:
 # fix overwrite basic
-# improve rgb interpretation
 # brute force based on certainty
 # input log
 # ls command
 # conf file to configure minimal 
+# add ability to turn image menu off
 # crop to size
 # stop showing lines when I don't want them
 # deduce qr size / version
