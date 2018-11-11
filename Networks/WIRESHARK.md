@@ -1,10 +1,6 @@
 # WIRESHARK STUFF
 
-
-use maginifying glass to search for string or regex
-
-
-##Useful filters:
+## Useful filters:
 
 NOT, OR, AND
 
@@ -29,7 +25,9 @@ filter out annoing / spammy protocols
 
 	!dns && !arp && !
 
-find 
+a really great filter cheatsheet is at:
+http://packetlife.net/media/library/13/Wireshark_Display_Filters.pdf
+
 ## Analysis:
 
 Wireshark has a few nice tools for getting an overview of the data, expecially with large captures, these can be found in the **Analysis** or **Statistics** menus.
@@ -39,6 +37,9 @@ A good way to do this is **Statistics > Protocol Heirarchy** which will show a b
 
 **Statisitics > Endpoints** gives a nice 
 breakdown of all the machines involved int he capture, and can be a quick way of e.g seeing all the websites somebody visited (tick name resolution to see the domain names and make sure name resolution is on in the default packet view first)
+
+Use maginifying glass to search for string or regex, it will look inside packet info column which is nice (but I don't think it also looks in all the packet contents)
+
 
 ## SSL and HTTPS:
 
