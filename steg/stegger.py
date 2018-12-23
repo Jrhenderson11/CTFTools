@@ -1,62 +1,17 @@
 import os
 import numpy
+from collections import OrderedDict
 from PIL import Image, ImageFile
+
+from menuer import Menu
+
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def printgreen(text):
-	print '\033[92m' + text + '\033[0m'
+	print('\033[92m' + text + '\033[0m')
 
 def printred(text):
-	print '\033[31m' + text + '\033[0m'
-
-def print_intro():
-	print("\033[1m\033[93m")
-	print("   _____ __                            ")
-	print("  / ___// /____  ____  ____  ___  _____")
-	print("  \__ \/ __/ _ \/ __ `/ __ `/ _ \/ ___/")
-	print(" ___/ / /_/  __/ /_/ / /_/ /  __/ /    ")
-	print("/____/\__/\___/\__, /\__, /\___/_/     ")
-	print("              /____//____/             ")
-	print("\033[0m")
-
-def print_menu_items():
-	#print "\nMenu:"
-	print "	[1] XOR 2 images"
-	print "	[2] AND 2 images"
-	print "	[3] ADD 2 images"
-	print "	[4] SUB 2 images"
-	print "	[5] Split into planes"
-	print "	[6] Recombine planes"
-	print "	[7] Dither\n"
-
-def menu():
-	os.system("clear")
-	print_intro()
-	print "\n"	
-	print_menu_items()
-	num = int(raw_input())
-	while not (num>0 and num<8):
-		os.system("clear")
-		print_intro()
-		print "	   \033[31m\033[1m  invalid input \033[0m\n"
-		print_menu_items()
-		num = int(raw_input())
-
-	if (num==1):
-		xor_images()
-	elif (num==2):
-		and_planes()
-	elif (num==3):
-		add_images()
-	elif (num==4):
-		and_images()
-	elif (num==5):
-		get_planes()
-	elif (num==6):
-		recombine_planes()
-	elif (num==7):
-		dither()
-
+	print('\033[31m' + text + '\033[0m')
 # ---- Array Stuff ----
 
 def diff_arrays(arr1, arr2):
@@ -121,7 +76,6 @@ def and_arrays(arr1, arr2):
 def bit_planes(arr):
 	planes = ([], [], [], [], [], [], [], [])
 
-	#xor data to get key
 	for i in range(0, len(arr)):
 		item = arr[i]
 		if (isinstance(item, tuple)):
@@ -131,7 +85,6 @@ def bit_planes(arr):
 		#pad binary
 		while (len(binary)< 8):
 			binary = "0"+binary
-		#print binary
 		for x in range(8):
 			if (binary[x]=="1"):
 				planes[x].append(255)
@@ -147,6 +100,7 @@ def save_planes(planes, width, height):
 		fname = "plane" + str(i) + ".bmp"
 		new_image = construct_image(planes[i], width, height)
 		new_image.save(fname, 'bmp')
+		print("Saved " + fname)
 
 # ---- Menu Functions ----
 
@@ -156,8 +110,8 @@ def xor_images():
 	keypix = xor_arrays(pix1, pix2)		
 
 	new_image = construct_image(keypix, width, height)
-	print "enter output file: (default key.bmp)"
-	fname3 = raw_input()
+	print("enter output file: (default key.bmp)")
+	fname3 = input()
 	if fname3=="":
 		fname3 = "key.bmp"
 	new_image.save(fname3, 'bmp')
@@ -168,8 +122,8 @@ def add_images():
 	keypix = add_arrays(pix1, pix2)		
 
 	new_image = construct_image(keypix, width, height)
-	print "enter output file: (default key.bmp)"
-	fname3 = raw_input()
+	print("enter output file: (default key.bmp)")
+	fname3 = input()
 	if fname3=="":
 		fname3 = "key.bmp"
 	new_image.save(fname3, 'bmp')
@@ -178,11 +132,10 @@ def and_images():
 	
 	(pix1, pix2) = get_2_image_data("image1.bmp", "image2.bmp")
 
-	#keypix = xor_bmp_tif(pix1, pix2)
 	keypix = and_arrays(pix1, pix2)
 	new_image = construct_image(keypix, width, height)
-	print "enter output file: (default key.bmp)"
-	fname3 = raw_input()
+	print("enter output file: (default key.bmp)")
+	fname3 = input()
 	if fname3=="":
 		fname3 = "key.bmp"
 	new_image.save(fname3, 'bmp')
@@ -193,15 +146,15 @@ def sub_images():
 	keypix = sub_arrays(pix1, pix2)		
 
 	new_image = construct_image(keypix, width, height)
-	print "enter output file: (default key.bmp)"
-	fname3 = raw_input()
+	print("enter output file: (default key.bmp)")
+	fname3 = input()
 	if fname3=="":
 		fname3 = "key.bmp"
 	new_image.save(fname3, 'bmp')
 
 def combine_4_images():
-	print "enter file: (default qr_part)"
-	base = raw_input()
+	print("enter file: (default qr_part)")
+	base = input()
 	if base=="":
 		base = "qr_part"
 	planes = ([], [], [], [], [], [], [], [])
@@ -224,7 +177,7 @@ def combine_4_images():
 	new_image = Image.new('RGB', (512, 512))
 	data = new_image.load()
 
-	#print len(array)
+	#print(len(array))
 	for i in range(len(planes[0])):
 		binstring = ""
 		for x in range(8):
@@ -241,8 +194,8 @@ def combine_4_images():
 	save_image(new_image)
 
 def xor_one_image(val):
-	print "enter imput file: (default enc1.bmp)"
-	fname = raw_input()
+	print("enter imput file: (default enc1.bmp)")
+	fname = input()
 	if fname=="":
 		fname = "enc1.bmp"
 	image1 = Image.open(fname, 'r')
@@ -262,19 +215,30 @@ def xor_one_image(val):
 			pix2.append(val)
 	keypix = xor_arrays(pix1, pix2)
 	new_image = construct_image(keypix, width, height)
-	print "enter output file: (default key.bmp)"
-	fname3 = raw_input()
+	print("enter output file: (default key.bmp)")
+	fname3 = input()
 	if fname3=="":
 		fname3 = "key.bmp"
 	new_image.save(fname3, 'bmp')
 
 def recombine_planes():
+	print("enter file prefix: (default plane)")
+	prefix = input()
+	if prefix=="":
+		prefix = "plane"
+
+	print("enter file suffix: (default .bmp)")
+	suffix = input()
+	if suffix=="":
+		suffix = ".bmp"
+
+
 	fname = ""
 	planes = ([], [], [], [], [], [], [], [])
 
 	#get pixel data into 8 arrays 
 	for i in range(8):
-		fname = "xor" + str(i) + ".bmp"
+		fname = prefix + str(i) + suffix
 		#open image
 		image = Image.open(fname, 'r')
 		pixels = image.load()
@@ -292,7 +256,7 @@ def recombine_planes():
 	new_image = Image.new('RGB', (512, 512))
 	data = new_image.load()
 
-	#print len(array)
+	#print(len(array))
 	for i in range(len(planes[0])):
 		binstring = ""
 		for x in range(8):
@@ -309,8 +273,8 @@ def recombine_planes():
 	save_image(new_image)
 
 def get_planes():
-	print "enter first file: (default image.png)"
-	fname = raw_input()
+	print("enter first file: (default image.png)")
+	fname = input()
 	if fname=="":
 		fname = "image.png"
 
@@ -326,22 +290,61 @@ def get_planes():
 		for y in range(height):
 			cpixel = pixels[x, y]
 			pix1.append(cpixel)
-		   # print cpixel
 	planes = bit_planes(pix1)
 	save_planes(planes, width, height)
 
+def extract_bytes():
+	print("width first? y/n")
+	ans = input().lower()	
+	while ans != "y" and ans != "n":
+		ans = input().lower()
+
+	data = get_image_data("image.png", width_first=(ans=="y"))
+	print("enter output file: (default output)")
+	fname = input()
+	if fname=="":
+		fname = "output"
+	f = open(fname, "wb")
+	for l in data:
+		for x in l:
+			f.write(bytes([x]))
+	f.close()
+
 def dither():
-	printred("not working yet :p") 
+	printred("not working yet :p")
 
 # ---- Image IO ----
 
+def get_image_data(default, width_first=True):
+	print("enter first file: (default " + default + ")")
+	fname = input()
+	if fname=="":
+		fname = default
+
+	image = Image.open(fname, 'r')
+
+	pixels = image.load()
+	
+	width, height = image.size
+	
+	pix = []
+	if width_first:
+		for x in range(width):
+			for y in range(height):
+				pix.append(pixels[x, y])
+	else:
+		for y in range(height):
+			for x in range(width):
+				pix.append(pixels[y, x])
+	return pix
+
 def get_2_image_data(default1, default2):
-	print "enter first file: (default " + default1 + ")"
-	fname = raw_input()
+	print("enter first file: (default " + default1 + ")")
+	fname = input()
 	if fname=="":
 		fname = default1
-	print "enter second file: (default " + default1 + ")"
-	fname2 = raw_input()
+	print("enter second file: (default " + default1 + ")")
+	fname2 = input()
 	if fname2=="":
 		fname2 = default2
 
@@ -360,7 +363,7 @@ def get_2_image_data(default1, default2):
 		for y in range(height):
 			cpixel = pixels[x, y]
 			pix1.append(cpixel)
-		   # print cpixel
+		   # print(cpixel)
 
 	pix2 = []
 	for x in range(width):
@@ -376,7 +379,6 @@ def construct_image(array, width, height):
 	new_image = Image.new('RGB', (width, height))
 	data = new_image.load()
 
-	print len(array)
 	for i in range(len(array)):
 		xwidth = i / height
 		xheight = i % height
@@ -385,15 +387,37 @@ def construct_image(array, width, height):
 
 def save_image(image):
 	print("enter output file: (default result.bmp)")
-	fname = raw_input()
+	fname = input()
 	if fname=="":
 		fname = "result.bmp"
 	image.save(fname)
 
-try:
-	menu()
-except KeyboardInterrupt as e:
-	printred("quitting")
+
+if __name__ == '__main__':
+
+	asciiart = """\033[1m\033[93m	   _____ __            
+	  / ___// /____  ____ _____ ____  _____
+	  \__ \/ __/ _ \/ __ `/ __ `/ _ \/ ___/
+	 ___/ / /_/  __/ /_/ / /_/ /  __/ /    
+	/____/\__/\___/\__, /\__, /\___/_/     
+	              /____//____/             \033[0m\n"""
+
+	menu_items = OrderedDict([("XOR 2 images",xor_images)
+	,("AND 2 images",and_images)
+	,("ADD 2 images",add_images)
+	,("SUB 2 images",sub_images)
+	,("XOR 2 images",xor_images)
+	,("Split into planes",get_planes)
+	,("Recombine planes",recombine_planes)
+	,("Dither",dither)
+	,("Extract bytes", extract_bytes)])
+
+
+	try:
+		m = Menu(asciiart, menu_items, tab="	   	")
+		m.menu_loop()
+	except KeyboardInterrupt as e:
+		printred("quitting")
 
 #TODO: 
 # interpret args

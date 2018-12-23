@@ -37,23 +37,17 @@ def attach_ls(text):
 	width = max_length + 4
 	lines = text.split("\n")
 	offset = 36
-	#do top
-	lines[0] = lines[0][:offset] +"\033[92m"+"	"*7+ " images:"
-	#do 2nd
-	lines[1] = "\033[34m" + lines[1][:offset] +"\033[92m "+ "=" * width
+	lines[0] = lines[0][:offset] +"\033[92m"+"	"*7+ " Images:"
 	
-	#do middle
+	# Draw box
+	lines[1] = "\033[34m" + lines[1][:offset] +"\033[92m "+ str("╭") + "─" * (width-1) + "╮"
 	for i in range(2, len(lines)-1):
 		if lines[i]=="":
-			lines[i] = "\033[34m" + lines[i] + "\033[92m"+("	"*6)+ " "*2+ "| " + files[i] + "\033[0m"
+			lines[i] = "\033[34m" + lines[i] + "\033[92m"+("	"*6)+ " "*2+ "| " + (("{:"+str(width-2)+"}").format(files[i])) + "|" + "\033[0m"
 		else:
-			lines[i] = "\033[34m" + lines[i]+ (" " * (offset-len(lines[i]))) +"\033[92m"+("	"*(4-int(len(lines[i])/4)))+ "| " + files[i] + "\033[0m"
+			lines[i] = "\033[34m" + lines[i]+ (" " * (offset-len(lines[i]))) +"\033[92m"+("	"*(4-int(len(lines[i])/4)))+ "| " + (("{:"+str(width-2)+"}").format(files[i])) + "|" + "\033[0m"
+	lines[len(lines)-1] = "\033[34m" + lines[len(lines)-1][:offset] +"\033[92m"+"	"*6 + (" " *2)+"╰" + "─" * (width-1) + "╯" + "\033[0m"
 
-	#do last
-	lines[len(lines)-1] = "\033[34m" + lines[len(lines)-1][:offset] +"\033[92m"+"	"*6 + (" " *2)+ "=" * width + "\033[0m"
-
-	for line in lines:
-		line = line + "\n"
 	return "\n".join(lines)
 
 def print_intro():
@@ -121,7 +115,6 @@ def menu():
 
 # ---- Unclassified Stuff ----
 
-# looks at arguments and does some stuff? 
 def interpret_args():
 	args = sys.argv[1:]
 	#print(args)
@@ -138,8 +131,8 @@ def interpret_args():
 
 # ---- Main Functions ----
 def basic_repair():
-	#different qr code versions have different numbers of blocks, one of the common ones is 29
-	
+
+	# Different qr code versions have different numbers of blocks, one of the common ones is 29
 	(pixels, width, height) = get_image_data("qr.png")
 
 	blocks = numpy.zeros((qr_size, qr_size))
@@ -382,10 +375,10 @@ def save_image(image):
 	image.save(fname)
 
 def get_num_files(base):
-	onlyfiles = ""
-	for f in listdir("./"):
-		if isfile(join("./", f)):
-			onlyfiles += " " + f
+	onlyfiles = "".join([(" " + f) for f in f in listdir("./") if isfile(join("./", f))])
+	# for f in listdir("./"):
+	# 	if isfile(join("./", f)):
+	# 		onlyfiles += " " + f
 	#print(str(len(re.findall((base + "\d+\."), onlyfiles))) + " files found called " + base) 
 	return len(re.findall((base + "\d+\."), onlyfiles))
 

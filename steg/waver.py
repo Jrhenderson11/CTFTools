@@ -54,6 +54,9 @@ def contruct_image(array, width, height):
 def printblue(text):
 	print('\033[34m' + text + '\033[0m')
 
+def printred(text):
+	print('\033[31m' + text + '\033[0m')
+
 def mean(numbers):
 	return float(sum(numbers)) / max(len(numbers), 1)
 
@@ -63,7 +66,6 @@ def contruct_image(array, width, height):
 	new_image = Image.new('RGB', (width, height))
 	data = new_image.load()
 
-	#print(len(keypix))
 	for i in range(len(keypix)):
 		xwidth = i / height
 		xheight = i % height
@@ -133,4 +135,7 @@ def get_wav_data():
 	print("done")
 	return data
 
-menu()
+try:
+	menu()
+except KeyboardInterrupt as e:
+	printred("quitting")
