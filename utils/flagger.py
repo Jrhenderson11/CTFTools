@@ -9,6 +9,11 @@ class Sorter():
 
 	dictionary = None
 
+	def __init__(self, intro, minimal, reverse):
+		self.intro = intro
+		self.minimal = minimal
+		self.reverse = reverse
+
 	def deleet(self, word):
 		# Get it?
 		l337 = {'1':'l', '3':'e', '4':'a', '5':'s', '7':'t', '8':'b', '9':'g'}
@@ -53,7 +58,7 @@ class Sorter():
 				item = item[1:-1]
 			sanitised.append((original, self.flag_like(item)))
 		
-		return [x[0] for x in sorted(sanitised, key=lambda x: x[1], reverse=True)]
+		return [x[0] for x in sorted(sanitised, key=lambda x: x[1], reverse=(not self.reverse))]
 
 	def sort(self, data):
 
@@ -88,7 +93,8 @@ class Sorter():
 				if len(matches) > 0:
 					print(data.replace(matches[0][0], (Fore.GREEN + Style.BRIGHT + matches[0][0] + Fore.RESET + Style.NORMAL)))
 				else:
-					print(data)
+					if not self.minimal:
+						print(data)
 		except (KeyboardInterrupt, EOFError):
 			print(Fore.RED + Style.BRIGHT + "Input over" + Fore.RESET + Style.NORMAL)
 			exit(0)
@@ -97,11 +103,13 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description="CTF flag detector")
 	parser.add_argument("filename", help="file path to use as input", nargs="?")
 	parser.add_argument("--intro", help="string to replace flag in flag\{\}", default="flag")
+	parser.add_argument("--minimal", help="Don't display input that isn't flag like", action='store_true')
+	parser.add_argument("--reverse", help="display result of sort upside down (best amtches at bottom)", action='store_true')
 
 	args = parser.parse_args()
 	filename = args.filename
 
-	Sorter.intro = args.intro
+	sorter = Sorter(args.intro, args.minimal, args.reverse)
 
 	if filename != None and filename != "":
 		try:
@@ -110,6 +118,6 @@ if __name__ == '__main__':
 		except FileNotFoundError:
 			print(Fore.RED + Style.BRIGHT + "File not found" + Fore.RESET + Style.NORMAL)
 			exit(-1)
-		Sorter().sort_and_display(data)
+		sorter.sort_and_display(data)
 	else:
-		Sorter().process_stream()
+		sorter.process_stream()
