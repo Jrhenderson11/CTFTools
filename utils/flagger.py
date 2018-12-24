@@ -81,6 +81,7 @@ class Sorter():
 		return self.sort_text(perfect) + (self.sort_text(bracketed)) + (self.sort_text(with_intro)) + (self.sort_text(rest))
 	
 	def sort_and_display(self, data):
+		# Take input separated by newlines and outputs in order of flaginess, highlighting flag-like matches 
 		if ("\n" in data):
 			print("\n".join(self.sort(data.split("\n"))))
 
