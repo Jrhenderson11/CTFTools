@@ -2,7 +2,6 @@
 import re
 import string
 import argparse
-import functools
 from colorama import Fore, Style
 
 
@@ -17,7 +16,7 @@ class Sorter():
 			word.replace(char, l337[char])
 		return word
 
-	# TODO: measure words as minimum edit distance (copes with mistakes and unknown punctuation better)
+	# TODO: measure words as minimum edit distance between any word in dictionary (copes with mistakes and unknown punctuation better)
 	def flag_like(self, input):
 		# Returns how likely a input of chars without an intro or {} is to be a flag
 		# basically sees if it is a sequence of english words and _
@@ -37,16 +36,14 @@ class Sorter():
 			self.dictionary.append(self.intro)
 
 		words = input.split("_")
-		for word in words:
-			if self.deleet(word).lower() in self.dictionary:
-				score +=1
+		socre = sum([1 for word in words if self.deleet(word).lower() in self.dictionary])
 		# normalise
 		score = score / len(words)
 		return score
 
 	def sort_text(self, strings):
 
-		normalised = []
+		sanitised = []
 
 		for item in strings:
 			# Remove flag{} characters
@@ -54,16 +51,16 @@ class Sorter():
 			item = item.replace(self.intro, "")
 			if re.match("^\{.*}$", item) is not None:
 				item = item[1:-1]
-			normalised.append((original, self.flag_like(item)))
+			sanitised.append((original, self.flag_like(item)))
 		
-		return [x[0] for x in sorted(normalised, key=lambda x: x[1], reverse=True)]
+		return [x[0] for x in sorted(sanitised, key=lambda x: x[1], reverse=True)]
 
 	def sort(self, data):
 
 		# Discard non printable items
 		data = [item for item in data if item.strip() !="" and ["x" for c in item if c not in string.printable]==[]]
 
-		# Extract perfect matches
+		# split input into categories depending on regex matching
 		perfect, bracketed, with_intro, rest = [], [], [], []
 
 		for item in data:
@@ -82,6 +79,20 @@ class Sorter():
 		if ("\n" in data):
 			print("\n".join(self.sort(data.split("\n"))))
 
+	def process_stream(self):
+		# Continuously accepts input, terminated with newlines and tries to highlight flag-like strings
+		try:
+			while True:
+				data = input()
+				matches = re.findall("(("+self.intro+")?(\{)?([A-z0-9]+_)([A-z0-9]+)+(\})?)", data)
+				if len(matches) > 0:
+					print(data.replace(matches[0][0], (Fore.GREEN + Style.BRIGHT + matches[0][0] + Fore.RESET + Style.NORMAL)))
+				else:
+					print(data)
+		except (KeyboardInterrupt, EOFError):
+			print(Fore.RED + Style.BRIGHT + "Input over" + Fore.RESET + Style.NORMAL)
+			exit(0)
+
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description="CTF flag detector")
 	parser.add_argument("filename", help="file path to use as input", nargs="?")
@@ -90,6 +101,8 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 	filename = args.filename
 
+	Sorter.intro = args.intro
+
 	if filename != None and filename != "":
 		try:
 			with open(filename, "r") as f:
@@ -97,8 +110,6 @@ if __name__ == '__main__':
 		except FileNotFoundError:
 			print(Fore.RED + Style.BRIGHT + "File not found" + Fore.RESET + Style.NORMAL)
 			exit(-1)
+		Sorter().sort_and_display(data)
 	else:
-		data = input("Input data: ")
-
-	Sorter.intro = args.intro
-	Sorter().sort_and_display(data)
+		Sorter().process_stream()
