@@ -275,8 +275,7 @@ def overlay_grid():
 
 def get_image_data(default):
 	
-	print("enter first file: (default " + default + ")")
-	fname = input()
+	fname = input("enter first file: (default " + default + ")\n")
 	if fname=="":
 		fname = default
 
