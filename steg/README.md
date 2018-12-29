@@ -155,7 +155,7 @@ Here's a quick rundown of how the tool can be useful
 
 `demo4.png` is taken from a spectrogram of a music file from a CTF, it is low res, green and blurry
 
-![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/steg/demo4.png "Original")
+![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/steg/demo4.jpg "Original")
 
 First we run the **Convert to black and white** function
 *Note I have cropped the image at this stage using an image editor, the program didn't do this*
