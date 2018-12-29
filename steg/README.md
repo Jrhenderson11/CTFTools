@@ -155,12 +155,12 @@ Here's a quick rundown of how the tool can be useful
 
 `demo4.png` is taken from a spectrogram of a music file from a CTF, it is low res, green and blurry
 
-![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/Steg/demo4.png "Original")
+![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/steg/demo4.png "Original")
 
 First we run the **Convert to black and white** function
 *Note I have cropped the image at this stage using an image editor, the program didn't do this*
 
-![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/Steg/qr_new2.png "Converted")
+![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/steg/qr_new2.png "Converted")
 
 Now the output is clearly much easier to read, but still with enough imperfections to stop it being scanned
 
@@ -168,13 +168,13 @@ Next we can run the **Analyse size** function to get the size of qr code used
 
 **Important: At this stage the image needs to be closely cropped to only include the QR code, otherwise stages from now on won't work**
 
-![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/Steg/analysis.png "Terminal")
+![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/steg/analysis.png "Terminal")
 
 *The dictionary shown in the command line output before the final descision shows how the algorithm works: it is a dictionary between qr size and how many squares in the basic patterns match, the higher the better. If you think it has decided incorrectly you could look for unususally high values to find the correct one*
 
 And here is a grid size of 21 overlaid on the image:
 
-![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/Steg/qr_new2_analysed.png "Analysed")
+![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/steg/qr_new2_analysed.png "Analysed")
 
 We can clearly see this is the right size for this code
 
@@ -185,7 +185,7 @@ Since we know the size is 21 we run the program with
 
 Select 1 from the menu, input the filename and we get this:
 
-![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/Steg/qr_new3.png "Final")
+![alt text](https://github.com/Jrhenderson11/CTFTools/blob/master/steg/qr_new3.png "Final")
 
 You can see since the original image was not perfectly square the algorithm has filled a column of black on the right side of the code but otherwise this is definitely what we want
 
