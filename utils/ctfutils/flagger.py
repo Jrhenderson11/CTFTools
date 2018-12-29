@@ -4,6 +4,9 @@ import string
 import argparse
 from colorama import Fore, Style
 
+RESET = Fore.RESET+ Style.NORMAL
+BRIGHT_GREEN = Fore.GREEN + Style.BRIGHT
+BRIGHT_RED = Fore.RED + Style.BRIGHT
 
 class Sorter():
 
@@ -92,12 +95,12 @@ class Sorter():
 				data = input()
 				matches = re.findall("(("+self.intro+")?(\{)?([A-z0-9]+_)([A-z0-9]+)+(\})?)", data)
 				if len(matches) > 0:
-					print(data.replace(matches[0][0], (Fore.GREEN + Style.BRIGHT + matches[0][0] + Fore.RESET + Style.NORMAL)))
+					print(data.replace(matches[0][0], (BRIGHT_GREEN + matches[0][0] + RESET)))
 				else:
 					if not self.minimal:
 						print(data)
 		except (KeyboardInterrupt, EOFError):
-			print(Fore.RED + Style.BRIGHT + "Input over" + Fore.RESET + Style.NORMAL)
+			print(BRIGHT_RED + "Input over" + RESET)
 			exit(0)
 
 if __name__ == '__main__':
@@ -117,7 +120,7 @@ if __name__ == '__main__':
 			with open(filename, "r") as f:
 				data = f.read()
 		except FileNotFoundError:
-			print(Fore.RED + Style.BRIGHT + "File not found" + Fore.RESET + Style.NORMAL)
+			print(BRIGHT_RED + "File not found" + RESET)
 			exit(-1)
 		sorter.sort_and_display(data)
 	else:
