@@ -233,6 +233,9 @@ def recombine_planes():
 		suffix = ".bmp"
 
 
+	width = 590
+	height = 350
+
 	fname = ""
 	planes = ([], [], [], [], [], [], [], [])
 
@@ -242,8 +245,8 @@ def recombine_planes():
 		#open image
 		image = Image.open(fname, 'r')
 		pixels = image.load()
-		for x in range(512):
-			for y in range(512):
+		for x in range(width):
+			for y in range(height):
 				cpixel = pixels[x, y]
 				if cpixel[0]==255:
 					planes[i].append(1)
@@ -251,9 +254,8 @@ def recombine_planes():
 					planes[i].append(0)
 
 	#reconstruct planes
-	width = 512
-	height = 512
-	new_image = Image.new('RGB', (512, 512))
+	
+	new_image = Image.new('RGB', (width, height))
 	data = new_image.load()
 
 	#print(len(array))
